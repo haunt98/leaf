@@ -53,8 +53,8 @@ func main() {
 	}
 
 	r := mux.NewRouter()
-	r.HandleFunc("/image", imageHandler.HandleReceive).Methods("POST")
-	r.HandleFunc("/image/{uuid}", imageHandler.HandleGetStatus).Methods("GET")
+	r.HandleFunc("/images", imageHandler.HandleReceive).Methods("POST")
+	r.HandleFunc("/images/{uuid}", imageHandler.HandleGetStatus).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":42069", r))
 }
