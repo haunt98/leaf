@@ -30,7 +30,7 @@ func (s *Service) Receive(req ReceiveRequest) (Response, error) {
 	}
 
 	return Response{
-		Status: Successful,
+		Status: Processing,
 		UUID:   guid.String(),
 	}, nil
 }

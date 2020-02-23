@@ -14,6 +14,8 @@ import (
 )
 
 func main() {
+	log.Println("naruto running...")
+
 	// Config
 	viper.SetConfigName("naruto")
 	viper.AddConfigPath("./configs")

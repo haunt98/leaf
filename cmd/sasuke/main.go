@@ -17,6 +17,9 @@ import (
 )
 
 func main() {
+	log.Println("sasuke running...")
+
+	// Config
 	viper.SetConfigName("sasuke")
 	viper.AddConfigPath("./configs")
 	if err := viper.ReadInConfig(); err != nil {
