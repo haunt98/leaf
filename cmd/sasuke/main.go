@@ -4,12 +4,21 @@ import (
 	"leaf/internal/pkg/image"
 	"log"
 
+	"github.com/spf13/viper"
+
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 )
 
 func main() {
+	viper.SetConfigName("sasuke")
+	viper.AddConfigPath("./configs")
+	if err := viper.ReadInConfig(); err != nil {
+		log.Println(err)
+		return
+	}
+
 	kafkaConsumer, err := kafka.NewConsumer(&kafka.ConfigMap{
-		"bootstrap.servers": "localhost",
+		"bootstrap.servers": viper.GetString("kafka.bootstrap.servers"),
 		"group.id":          image.Group,
 		"auto.offset.reset": "earliest",
 	})

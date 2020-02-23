@@ -13,12 +13,12 @@ type ProcessConsumer struct {
 func (c *ProcessConsumer) ReceiveProcess() (ProcessMessage, error) {
 	msg, err := c.KafkaConsumer.ReadMessage(-1)
 	if err != nil {
-		return ProcessMessage{}, nil
+		return ProcessMessage{}, err
 	}
 
 	var processMsg ProcessMessage
 	if err := json.Unmarshal(msg.Value, &processMsg); err != nil {
-		return ProcessMessage{}, nil
+		return ProcessMessage{}, err
 	}
 
 	return processMsg, nil

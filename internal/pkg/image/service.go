@@ -9,7 +9,7 @@ type Service struct {
 	ProcessProducer *ProcessProducer
 }
 
-func (s *Service) Receive(req ReceiveRequest) (ReceiveResponse, error) {
+func (s *Service) Receive(req ReceiveRequest) (Response, error) {
 	// Generate UUID
 	guid := xid.New()
 
@@ -18,7 +18,7 @@ func (s *Service) Receive(req ReceiveRequest) (ReceiveResponse, error) {
 		Status:      Processing,
 		OriginalURL: req.URL,
 	}); err != nil {
-		return ReceiveResponse{}, nil
+		return Response{}, err
 	}
 
 	// Send process message
@@ -26,10 +26,11 @@ func (s *Service) Receive(req ReceiveRequest) (ReceiveResponse, error) {
 		UUID: guid.String(),
 		URL:  req.URL,
 	}, Topic); err != nil {
-		return ReceiveResponse{}, nil
+		return Response{}, err
 	}
 
-	return ReceiveResponse{
-		UUID: guid.String(),
+	return Response{
+		Status: Successful,
+		UUID:   guid.String(),
 	}, nil
 }

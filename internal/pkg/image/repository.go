@@ -33,12 +33,12 @@ func (r *StatusRepository) Read(uuid string) (Status, error) {
 	key := r.generateKey(uuid)
 	value, err := r.RedisClient.Get(key).Result()
 	if err != nil {
-		return Status{}, nil
+		return Status{}, err
 	}
 
 	var status Status
 	if err := json.Unmarshal([]byte(value), &status); err != nil {
-		return Status{}, nil
+		return Status{}, err
 	}
 
 	return status, nil

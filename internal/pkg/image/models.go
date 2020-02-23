@@ -25,6 +25,8 @@ type ReceiveRequest struct {
 	URL string `json:"url"`
 }
 
-type ReceiveResponse struct {
-	UUID string `json:"uuid"`
+type Response struct {
+	Status int    `json:"status"`
+	UUID   string `json:"uuid"`
+	URL    string `json:"url"`
 }

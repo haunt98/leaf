@@ -14,7 +14,7 @@ type Service struct {
 
 func (s *Service) Download(url, path string) error {
 	dir := filepath.Dir(path)
-	if _, serr := os.Stat(dir); serr != nil {
+	if _, statErr := os.Stat(dir); statErr != nil {
 		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
 			return err
 		}

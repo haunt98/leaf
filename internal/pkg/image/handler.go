@@ -31,7 +31,7 @@ func (h *Handler) HandleReceive(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	log.Println("LGTM")
+	log.Println("Receive LGTM")
 }
 
 func (h *Handler) HandleGetStatus(w http.ResponseWriter, req *http.Request) {
@@ -43,11 +43,17 @@ func (h *Handler) HandleGetStatus(w http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	rsp := Response{
+		Status: status.Status,
+		UUID:   vars["uuid"],
+		URL:    status.ProcessedURL,
+	}
+
 	w.Header().Set("Content-Type", "application/json")
-	if err := json.NewEncoder(w).Encode(&status); err != nil {
+	if err := json.NewEncoder(w).Encode(&rsp); err != nil {
 		log.Println(err)
 		return
 	}
 
-	log.Println("LGTM")
+	log.Println("Get Status LGTM")
 }

@@ -1,9 +1,12 @@
 package main
 
 import (
+	"fmt"
 	"leaf/internal/pkg/image"
 	"log"
 	"net/http"
+
+	"github.com/spf13/viper"
 
 	"github.com/confluentinc/confluent-kafka-go/kafka"
 	"github.com/go-redis/redis/v7"
@@ -11,13 +14,23 @@ import (
 )
 
 func main() {
+	// Config
+	viper.SetConfigName("naruto")
+	viper.AddConfigPath("./configs")
+	if err := viper.ReadInConfig(); err != nil {
+		log.Println(err)
+		return
+	}
+
+	// Redis
 	redisClient := redis.NewClient(&redis.Options{
-		Addr:     "localhost:6379",
-		Password: "",
-		DB:       0,
+		Addr: fmt.Sprintf("%s:%s", viper.GetString("redis.host"), viper.Get("redis.port")),
 	})
 
-	kafkaProducer, err := kafka.NewProducer(&kafka.ConfigMap{"bootstrap.servers": "localhost"})
+	// Kafka
+	kafkaProducer, err := kafka.NewProducer(&kafka.ConfigMap{
+		"bootstrap.servers": viper.GetString("kafka.bootstrap.servers"),
+	})
 	if err != nil {
 		log.Println(err)
 		return
@@ -35,6 +48,7 @@ func main() {
 		}
 	}()
 
+	// Services
 	imageStatusRepository := image.StatusRepository{
 		RedisClient: redisClient,
 	}
@@ -52,9 +66,10 @@ func main() {
 		Service: &imageService,
 	}
 
+	// API
 	r := mux.NewRouter()
 	r.HandleFunc("/images", imageHandler.HandleReceive).Methods("POST")
 	r.HandleFunc("/images/{uuid}", imageHandler.HandleGetStatus).Methods("GET")
 
-	log.Fatal(http.ListenAndServe(":42069", r))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", viper.GetInt("api.port")), r))
 }
