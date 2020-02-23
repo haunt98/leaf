@@ -52,12 +52,17 @@ func main() {
 			return
 		}
 
-		imgurUploadImageRsp, err := imgurService.UploadImage(os.Args[2])
+		imgurUploadImgRsp, err := imgurService.UploadImage(os.Args[2])
 		if err != nil {
 			log.Println(err)
 			return
 		}
 
-		log.Printf("%+v\n", imgurUploadImageRsp)
+		if !imgurUploadImgRsp.Success {
+			log.Println("Hmm imgur sometimes")
+			return
+		}
+
+		log.Printf("%+v\n", imgurUploadImgRsp)
 	}
 }

@@ -13,6 +13,7 @@ type Service struct {
 }
 
 func (s *Service) Download(url, path string) error {
+	// Create file
 	dir := filepath.Dir(path)
 	if _, statErr := os.Stat(dir); statErr != nil {
 		if err := os.MkdirAll(dir, os.ModePerm); err != nil {
@@ -30,6 +31,7 @@ func (s *Service) Download(url, path string) error {
 		}
 	}()
 
+	// Do request
 	rsp, err := s.HTTPClient.Get(url)
 	if err != nil {
 		return err

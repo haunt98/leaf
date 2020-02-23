@@ -14,7 +14,7 @@ func (s *Service) Receive(req ReceiveRequest) (Response, error) {
 	guid := xid.New()
 
 	// Create status
-	if err := s.StatusRepo.Create(guid.String(), Status{
+	if err := s.StatusRepo.Set(guid.String(), Status{
 		Status:      Processing,
 		OriginalURL: req.URL,
 	}); err != nil {

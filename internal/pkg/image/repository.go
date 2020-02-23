@@ -15,7 +15,7 @@ func (r *StatusRepository) generateKey(uuid string) string {
 	return fmt.Sprintf("image:uuid:%s", uuid)
 }
 
-func (r *StatusRepository) Create(uuid string, status Status) error {
+func (r *StatusRepository) Set(uuid string, status Status) error {
 	value, err := json.Marshal(&status)
 	if err != nil {
 		return err
@@ -29,7 +29,7 @@ func (r *StatusRepository) Create(uuid string, status Status) error {
 	return nil
 }
 
-func (r *StatusRepository) Read(uuid string) (Status, error) {
+func (r *StatusRepository) Get(uuid string) (Status, error) {
 	key := r.generateKey(uuid)
 	value, err := r.RedisClient.Get(key).Result()
 	if err != nil {

@@ -37,7 +37,7 @@ func (h *Handler) HandleReceive(w http.ResponseWriter, req *http.Request) {
 func (h *Handler) HandleGetStatus(w http.ResponseWriter, req *http.Request) {
 	vars := mux.Vars(req)
 
-	status, err := h.Service.StatusRepo.Read(vars["uuid"])
+	status, err := h.Service.StatusRepo.Get(vars["uuid"])
 	if err != nil {
 		log.Println(err)
 		return

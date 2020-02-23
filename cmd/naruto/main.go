@@ -26,6 +26,10 @@ func main() {
 	redisClient := redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf("%s:%s", viper.GetString("redis.host"), viper.Get("redis.port")),
 	})
+	if err := redisClient.Ping().Err(); err != nil {
+		log.Println(err)
+		return
+	}
 
 	// Kafka
 	kafkaProducer, err := kafka.NewProducer(&kafka.ConfigMap{
